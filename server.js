@@ -2,9 +2,10 @@
 const express = require('express')
 const { count } = require('yargs')
 const app = express()
-var arg = require('minimist')(process.argv.slice(2))
 
-const port = arg.port || 5555
+const args = require('minimist')(process.argv.slice(2))
+args["port"]
+var port = args.port || 5000 || process.env.PORT
 
 /** Coin flip functions 
  * This module will emulate a coin flip given various conditions as parameters as defined below
@@ -97,11 +98,6 @@ const port = arg.port || 5555
     let flip = coinFlip();
     return {call: call, flip: flip, result: flip == call ? "win" : "lose" }
   }
-  
- 
-app.use(function(req, res){
-    res.status(404).send('404 NOT FOUND')
-});
 
 
 // Start an app server
