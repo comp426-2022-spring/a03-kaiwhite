@@ -2,17 +2,15 @@
 const express = require('express')
 const app = express()
 var arg = require('minimist')(process.argv.slice(2))
-
+args["port"]
 const port = arg.port || process.env.PORT || 5555
+
+
 // Start an app server
 const server = app.listen(port, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%',port))
 });
 
-// Default response for any other request
-app.use(function(req, res){
-    res.status(404).send('404 NOT FOUND')
-});
 
 app.get('/app/', (req, res) => {
     // Respond with status 200
@@ -22,6 +20,7 @@ app.get('/app/', (req, res) => {
         res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
         res.end(res.statusCode+ ' ' +res.statusMessage)
     });
+// Default response for any other request
 
 //single flip
 app.get('/app/flip', (req, res) => {
@@ -30,8 +29,9 @@ app.get('/app/flip', (req, res) => {
 
 //many flip
 app.get('/app/flips/:number', (req, res) => {
-	const flips = countFlips(req.params.number);
-	res.status(200).json(flips);
+	let flips = countFlips(req.params.number);
+    let final = countFlips(flips)
+	res.status(200).json({'raw' : flips, 'summary' : final});
 });
 
 //guess flip
@@ -141,8 +141,7 @@ app.use(function(req, res){
     return {call: call, flip: flip, result: flip == call ? "win" : "lose" }
   }
   
-  
-  /** Export 
-   * 
-   * Export all of your named functions
-  */
+ 
+app.use(function(req, res){
+    res.status(404).send('404 NOT FOUND')
+});
