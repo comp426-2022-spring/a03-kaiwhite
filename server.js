@@ -1,54 +1,10 @@
 // Require Express.js
 const express = require('express')
+const { count } = require('yargs')
 const app = express()
 var arg = require('minimist')(process.argv.slice(2))
 
-args["port"]
 const port = arg.port || 5555
-
-
-// Start an app server
-const server = app.listen(port, () => {
-    console.log('App listening on port %PORT%'.replace('%PORT%',port))
-});
-
-
-app.get('/app/', (req, res) => {
-    // Respond with status 200
-        res.statusCode = 200;
-    // Respond with status message "OK"
-        res.statusMessage = 'OK';
-        res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
-        res.end(res.statusCode+ ' ' +res.statusMessage)
-    });
-// Default response for any other request
-
-//single flip
-app.get('/app/flip', (req, res) => {
-    res.status(200).json({"flip" : coinFlip()})
-});
-
-//many flip
-app.get('/app/flips/:number', (req, res) => {
-	let flips = countFlips(req.params.number);
-    let final = countFlips(flips)
-	res.status(200).json({'raw' : flips, 'summary' : final});
-});
-
-//guess flip
-app.get('/app/flip/call/tails', (req, res) => {
-    res.status(200).json(flipACoin("tails"))
-});
-
-app.get('/app/flip/call/heads', (req, res) => {
-    res.status(200).json(flipACoin("heads"))
-});
-
-app.use(function(req, res){
-    res.status(404).send('404 NOT FOUND')
-});
-
-
 
 /** Coin flip functions 
  * This module will emulate a coin flip given various conditions as parameters as defined below
@@ -143,6 +99,48 @@ app.use(function(req, res){
   }
   
  
+app.use(function(req, res){
+    res.status(404).send('404 NOT FOUND')
+});
+
+
+// Start an app server
+const server = app.listen(port, () => {
+    console.log('App listening on port %PORT%'.replace('%PORT%',port))
+});
+
+
+app.get('/app/', (req, res) => {
+    // Respond with status 200
+        res.statusCode = 200;
+    // Respond with status message "OK"
+        res.statusMessage = 'OK';
+        res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
+        res.end(res.statusCode+ ' ' +res.statusMessage)
+    });
+// Default response for any other request
+
+//single flip
+app.get('/app/flip', (req, res) => {
+    res.status(200).json({"flip" : coinFlip()})
+});
+
+//many flip
+app.get('/app/flips/:number', (req, res) => {
+	let flips = countFlips(req.params.number);
+    let final = countFlips(flips)
+	res.status(200).json({'raw' : flips, 'summary' : final});
+});
+
+//guess flip
+app.get('/app/flip/call/tails', (req, res) => {
+    res.status(200).json(flipACoin("tails"))
+});
+
+app.get('/app/flip/call/heads', (req, res) => {
+    res.status(200).json(flipACoin("heads"))
+});
+
 app.use(function(req, res){
     res.status(404).send('404 NOT FOUND')
 });
