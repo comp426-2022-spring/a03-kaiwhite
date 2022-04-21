@@ -2,8 +2,9 @@
 const express = require('express')
 const app = express()
 var arg = require('minimist')(process.argv.slice(2))
+
 args["port"]
-const port = arg.port || process.env.PORT || 5555
+const port = arg.port || 5555
 
 
 // Start an app server
