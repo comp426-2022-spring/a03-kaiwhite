@@ -123,8 +123,8 @@ app.get('/app/flip', (req, res) => {
 
 //many flip
 app.get('/app/flips/:number', (req, res) => {
-	let flips = countFlips(req.params.number);
-    let final = countFlips(flips)
+	let flips = coinFlips(req.params.number);
+  let final = countFlips(flips)
 	res.status(200).json({'raw' : flips, 'summary' : final});
 });
 
